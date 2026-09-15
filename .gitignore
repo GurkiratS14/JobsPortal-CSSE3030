@@ -1,0 +1,30 @@
+# Gradle
+.gradle/
+build/
+bin/
+out/
+.spf-tools/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Compiled classes
+*.class
+
+# Additional local tool downloads
+libs/
+
+# Machine-specific JPF setup
+jpf/site.properties
+jpf/jpf-core/.git/
+jpf/jpf-symbc/.git/

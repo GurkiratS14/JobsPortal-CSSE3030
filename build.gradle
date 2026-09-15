@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+jacoco {
+    toolVersion = '0.8.11'
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    // Randoop generates JUnit 4 tests; Vintage runs them alongside JUnit 5.
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.10.2'
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+tasks.register('jpfClasses', JavaCompile) {
+    // JPF requires Java 8 bytecode. Students add their own Q3 driver here.
+    source(
+            'src/main/java/edu/example/jobsportal/model/MatchResult.java',
+            'src/main/java/edu/example/jobsportal/service/CandidateMatchingService.java',
+            fileTree('src/jpf/java') { include '**/*.java' }
+    )
+    classpath = files()
+    destinationDirectory = layout.buildDirectory.dir('jpf-classes')
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    options.compilerArgs.add('-Xlint:-options')
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+        xml.required = true
+        csv.required = false
+    }
+}
