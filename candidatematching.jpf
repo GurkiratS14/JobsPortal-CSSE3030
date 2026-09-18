@@ -1,0 +1,9 @@
+target = edu.example.jobsportal.symbolic.CandidateMatchingDriver
+classpath = build/jpf-classes
+sourcepath = src/main/java,src/jpf/java
+
+symbolic.method = edu.example.jobsportal.service.CandidateMatchingService.evaluateCandidate(sym#sym#sym#sym#sym#sym)
+symbolic.dp = z3
+
+listener = .symbc.SymbolicListener
+search.multiple_errors = true
