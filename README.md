@@ -59,5 +59,29 @@ for the required analyses and commands.
 The production implementation is provided as a testing target. Do not assume
 that every behaviour is correct.
 
-## Provide the exact commands you used to run each of the tools required for the assignment, including any necessary options or parameters. 
-…
+## Provide the exact commands you used to run each of the tools required for the assignment, including any necessary options or parameters.
+
+JUnit tests (all manually written suites, Q1, Q2, Q4):
+./gradlew test
+
+JaCoCo coverage report (Q2.1d, Q3.1e, Q3.2b):
+./gradlew test jacocoTestReport
+open build/reports/jacoco/test/html/index.html
+
+Symbolic Pathfinder (Q3.1) — one-time setup, then run:
+./setup-spf-macos.sh
+./gradlew jpfClasses
+./run-jpf-macos.sh candidatematching.jpf
+
+Randoop (Q3.2) — 60-second generation budget:
+java -classpath "build/jpf-classes:randoop-all-4.3.4.jar" randoop.main.Main gentests \
+--testclass=edu.example.jobsportal.service.CandidateMatchingService \
+--time-limit=60 \
+--junit-package-name=edu.example.jobsportal.randoop \
+--junit-output-dir=src/test/java/edu/example/jobsportal/randoop
+
+To run only the Randoop-generated suite (isolated JaCoCo coverage, Q3.2b):
+./gradlew test --tests "edu.example.jobsportal.randoop.*" jacocoTestReport
+
+To run only the SPF-derived suite (isolated JaCoCo coverage, Q3.1e):
+./gradlew test --tests CandidateMatchingServiceSpfTest jacocoTestReport
